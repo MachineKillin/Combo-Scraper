@@ -1,4 +1,4 @@
-import requests, re, subprocess, os, urllib3, datetime, threading, cloudscraper, time
+import requests, re, subprocess, os, urllib3, datetime, threading, time
 from bs4 import BeautifulSoup
 from console import utils
 from colorama import Fore
@@ -94,8 +94,7 @@ class leech():
     def nohide():
         dupe = []
         try:
-            scraper = cloudscraper.create_scraper()
-            req = scraper.get("https://nohide.space/forums/free-email-pass.3/?order=post_date&direction=desc")
+            req = requests.get("https://nohide.space/forums/free-email-pass.3/?order=post_date&direction=desc")
             #open('nohide.txt', 'w', encoding='utf-8').write(req.text)
             soup = BeautifulSoup(req.text, 'html.parser')
             target_div = soup.find('div', class_='structItemContainer-group js-threadList')
@@ -108,7 +107,7 @@ class leech():
                         href = href.strip('latest').rsplit('page-', 1)[0]
                         if href not in dupe:
                             dupe.append(href)
-                            s = BeautifulSoup(scraper.get("https://nohide.space"+href, headers=agent).text, 'html.parser')
+                            s = BeautifulSoup(requests.get("https://nohide.space"+href, headers=agent).text, 'html.parser')
                             for ele in s.find_all('div', class_='bbWrapper'):
                                 link_el = ele.find_all('a', href=True)
                                 for url in link_el:
